@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import { connecToDatabase } from "./services/db/mongo.connection.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -16,6 +17,8 @@ const __dirname = dirname(__filename);
 app.use(express.static(path.join(__dirname, "styles")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 
-app.listen(PORT, () => {
-  console.log(`Serving is running on http://localhost:${PORT}`);
+connecToDatabase().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Serving is running on http://localhost:${PORT}`);
+  });
 });
