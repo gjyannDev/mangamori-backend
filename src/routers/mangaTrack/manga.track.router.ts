@@ -1,5 +1,12 @@
 import { Router } from "express";
-import { getCompletedData, getDroppedData, getOnHoldData, getPlanToReadData, getReadingData } from "../../controllers/mangaTrack/manga.track.controller.js";
+import {
+  getCompletedData,
+  getDroppedData,
+  getOnHoldData,
+  getPlanToReadData,
+  getReadingData,
+  viewStatusDetails,
+} from "../../controllers/mangaTrack/manga.track.controller.js";
 
 const manga_track_router = Router();
 
@@ -11,10 +18,6 @@ manga_track_router.get("/dropped", getDroppedData);
 manga_track_router.get("/onhold", getOnHoldData);
 
 //Get status data per details
-manga_track_router.get("/reading/:id", );
-manga_track_router.get("/completed/:id", );
-manga_track_router.get("/plantoread/:id", );
-manga_track_router.get("/dropped/:id", );
-manga_track_router.get("/onhold/:id", );
+manga_track_router.get("/:status/:id", viewStatusDetails);
 
 export default manga_track_router;
