@@ -5,8 +5,9 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import "./models/indexLoader.js";
 import discover_router from "./routers/discover/discover.router.js";
-import { connecToDatabase } from "./services/db/mongo.connection.js";
+import homepage_router from "./routers/homepage/homepage.router.js";
 import manga_track_router from "./routers/mangaTrack/manga.track.router.js";
+import { connecToDatabase } from "./services/db/mongo.connection.js";
 
 dotenv.config();
 const PORT = process.env.PORT;
@@ -21,8 +22,12 @@ const __dirname = dirname(__filename);
 app.use(express.static(path.join(__dirname, "styles")));
 app.use("/assets", express.static(path.join(__dirname, "assets")));
 
-app.use("/discover", discover_router);
+//Homepage routes
+app.use("/", homepage_router);
 
+//Other routes
+app.use("/discover", discover_router);
+app.use("/mangatrack", manga_track_router);
 
 connecToDatabase().then(() => {
   app.listen(PORT, () => {

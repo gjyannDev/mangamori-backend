@@ -6,7 +6,7 @@ const manga_track_schema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    mangaId: {
+    mangaEntry: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "MangaEntry",
     },
