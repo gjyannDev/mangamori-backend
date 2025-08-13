@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { getNewRealeaseSeries, getTopRatedSeries, getTrendingSeries } from "../../services/external/manga.api.js";
+import {
+  getNewRealeaseSeries,
+  getTopRatedSeries,
+  getTrendingSeries,
+} from "../../services/external/manga.api.js";
 
 export async function getTrending(req: Request, res: Response) {
   try {
