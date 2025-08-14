@@ -1,15 +1,26 @@
 import { Request, Response } from "express";
+import { getMangaStatistics } from "../../services/external/manga.api.js";
 import {
   getNewRealeaseSeries,
   getTopRatedSeries,
   getTrendingSeries,
-} from "../../services/external/manga.api.js";
+} from "../../services/manga/discover.api.js";
+import { simplifiedMangaData } from "../../utils/manga.mappers.js";
 
 export async function getTrending(req: Request, res: Response) {
   try {
-    const trending_series = await getTrendingSeries();
+    const { mangaIds, trendingData } = await getTrendingSeries();
 
-    res.json(trending_series);
+    const stats = await getMangaStatistics(mangaIds);
+
+    const formatted_data = simplifiedMangaData(trendingData.data);
+
+    const merged_data = formatted_data.map((manga: any) => ({
+      ...manga,
+      statistics: stats[manga.id] || null,
+    }));
+
+    res.json(merged_data);
   } catch (error) {
     console.error("Error fetching trending series: ", error);
     res.status(404).json({ error: "Failed to fetch trending manga" });

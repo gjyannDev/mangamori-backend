@@ -5,7 +5,7 @@ dotenv.config();
 
 const mangadex = axios.create({
   baseURL: process.env.MANGADEX_API_URL,
-  timeout: 5000,
+  timeout: 10000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
