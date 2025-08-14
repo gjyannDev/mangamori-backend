@@ -15,5 +15,6 @@ export function simplifiedMangaData(
     lastChapter: item.attributes.lastChapter,
     status: item.attributes.status,
     year: item.attributes.year,
+    relationships: item.relationships,
   }));
 }

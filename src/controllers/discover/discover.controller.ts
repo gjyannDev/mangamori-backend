@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { getMangaStatistics } from "../../services/external/manga.api.js";
+import {
+  getMangaCoverImageUrl,
+  getMangaStatistics,
+} from "../../services/external/manga.api.js";
 import {
   getNewRealeaseSeries,
   getTopRatedSeries,
@@ -9,16 +12,21 @@ import { simplifiedMangaData } from "../../utils/manga.mappers.js";
 
 export async function getTrending(req: Request, res: Response) {
   try {
-    const { mangaIds, trendingData } = await getTrendingSeries();
+    const { mangaIds, trendingData, coverUrl } = await getTrendingSeries();
 
     const stats = await getMangaStatistics(mangaIds);
 
-    const formatted_data = simplifiedMangaData(trendingData.data);
+    const formatted_data = simplifiedMangaData(trendingData);
 
-    const merged_data = formatted_data.map((manga: any) => ({
-      ...manga,
-      statistics: stats[manga.id] || null,
-    }));
+    const merged_data = formatted_data.map((manga: any) => {
+      const matching_cover = coverUrl.find((c: any) => c.id === manga.id);
+      
+      return {
+        ...manga,
+        statistics: stats[manga.id] || null,
+        coverUrl: matching_cover ? matching_cover.coverUrl : null,
+      };
+    });
 
     res.json(merged_data);
   } catch (error) {
