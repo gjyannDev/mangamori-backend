@@ -26,7 +26,6 @@ export interface DiscoverRawData {
     status: string;
     year: number;
   };
-  relationships: Relationship[];
 }
 
 export interface DiscoverSimplifiedData {
