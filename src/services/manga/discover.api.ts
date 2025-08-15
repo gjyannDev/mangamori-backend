@@ -36,10 +36,17 @@ export async function getTopRatedSeries() {
         order: {
           rating: "desc",
         },
+        includes: ["cover_art"],
       },
     });
 
-    return res.data;
+    const manga_data = res.data.data;
+    const manga_ids = manga_data.map((manga: any) => manga.id);
+
+    return {
+      topRatedData: manga_data,
+      mangaIds: manga_ids,
+    };
   } catch (error: any) {
     console.error(
       "Error fetching API data: ",
@@ -57,10 +64,17 @@ export async function getNewRealeaseSeries() {
         order: {
           createdAt: "desc",
         },
+        includes: ["cover_art"],
       },
     });
 
-    return res.data;
+    const manga_data = res.data.data;
+    const manga_ids = manga_data.map((manga: any) => manga.id);
+
+    return {
+      newReleaseData: manga_data,
+      mangaIds: manga_ids,
+    };
   } catch (error: any) {
     console.error(
       "Error fetching API data: ",
