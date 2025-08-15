@@ -24,7 +24,7 @@ export async function getMangaStatistics(mangaIds: string[]) {
 }
 
 export async function getMangaCoverImageUrl(
-  mangaData: CoverUrlTypes[],
+  mangaData: DiscoverRawData[],
 ) {
   try {
     const mangaWithCovers = mangaData.map((manga: any) => {
@@ -40,7 +40,9 @@ export async function getMangaCoverImageUrl(
       };
     });
 
-    return mangaWithCovers
+    return {
+      coverUrl: mangaWithCovers
+    }
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error fetching manga statistics: ", error.message);

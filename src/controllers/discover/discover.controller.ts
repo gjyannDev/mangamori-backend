@@ -12,15 +12,17 @@ import { simplifiedMangaData } from "../../utils/manga.mappers.js";
 
 export async function getTrending(req: Request, res: Response) {
   try {
-    const { mangaIds, trendingData, coverUrl } = await getTrendingSeries();
+    const { mangaIds, trendingData } = await getTrendingSeries();
 
     const stats = await getMangaStatistics(mangaIds);
+    const cover_url = await getMangaCoverImageUrl(trendingData);
 
     const formatted_data = simplifiedMangaData(trendingData);
-
     const merged_data = formatted_data.map((manga: any) => {
-      const matching_cover = coverUrl.find((c: any) => c.id === manga.id);
-      
+      const matching_cover = cover_url?.coverUrl.find(
+        (c: any) => c.id === manga.id
+      );
+
       return {
         ...manga,
         statistics: stats[manga.id] || null,
