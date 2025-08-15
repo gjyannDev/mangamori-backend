@@ -56,7 +56,7 @@ export async function getTopRatedSeries() {
   }
 }
 
-export async function getNewRealeaseSeries() {
+export async function getNewReleaseSeries() {
   try {
     const res = await mangadex.get("/manga", {
       params: {

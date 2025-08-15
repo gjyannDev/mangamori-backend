@@ -4,7 +4,7 @@ import {
   getMangaStatistics,
 } from "../../services/external/manga.api.js";
 import {
-  getNewRealeaseSeries,
+  getNewReleaseSeries,
   getTopRatedSeries,
   getTrendingSeries,
 } from "../../services/manga/discover.api.js";
@@ -66,7 +66,7 @@ export async function getTopRated(req: Request, res: Response) {
 
 export async function getNewRealeases(req: Request, res: Response) {
   try {
-    const { mangaIds, newReleaseData } = await getNewRealeaseSeries();
+    const { mangaIds, newReleaseData } = await getNewReleaseSeries();
 
     const stats = await getMangaStatistics(mangaIds);
     const cover_url = await getMangaCoverImageUrl(newReleaseData);
