@@ -17,6 +17,7 @@ export interface DiscoverRawData {
   attributes: {
     title: {
       en: string;
+      "ja-ro": string;
     };
     description: {
       en: string;

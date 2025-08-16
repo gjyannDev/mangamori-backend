@@ -9,7 +9,7 @@ export function simplifiedMangaData(
   return data.map((item) => ({
     id: item.id,
     type: item.type,
-    title: item.attributes.title.en,
+    title: item.attributes.title.en || item.attributes.title["ja-ro"],
     description: item.attributes.description.en,
     lastVolume: item.attributes.lastVolume,
     lastChapter: item.attributes.lastChapter,
