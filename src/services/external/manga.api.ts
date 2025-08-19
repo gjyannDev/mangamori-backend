@@ -5,7 +5,10 @@ import {
 } from "../../types/discover.types.js";
 import mangadex from "../api/mangadex.api.js";
 
-export async function getMangaStatistics(mangaIds: string[]) {
+export async function getMangaStatistics(
+  mangaIds?: string[],
+  mangaId?: string
+) {
   try {
     const res = await mangadex.get(`/statistics/manga`, {
       params: {
@@ -23,9 +26,7 @@ export async function getMangaStatistics(mangaIds: string[]) {
   }
 }
 
-export async function getMangaCoverImageUrl(
-  mangaData: DiscoverRawData[],
-) {
+export async function getMangaCoverImageUrl(mangaData: DiscoverRawData[]) {
   try {
     const mangaWithCovers = mangaData.map((manga: any) => {
       const coverRel = manga.relationships.find(
@@ -41,8 +42,8 @@ export async function getMangaCoverImageUrl(
     });
 
     return {
-      coverUrl: mangaWithCovers
-    }
+      coverUrl: mangaWithCovers,
+    };
   } catch (error) {
     if (error instanceof Error) {
       console.error("Error fetching manga statistics: ", error.message);

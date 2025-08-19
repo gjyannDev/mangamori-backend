@@ -83,3 +83,19 @@ export async function getNewReleaseSeries() {
     throw new Error("Error Fetching Data");
   }
 }
+
+export async function getMangaByIdService(mangaId: string) {
+  try {
+    const res = await mangadex.get(`/manga/${mangaId}`);
+
+    const manga_data = res.data.data;
+
+    return manga_data;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error fetching trending by id in services: ", error.message);
+    } else {
+      console.error("Unkown error: ", error);
+    }
+  }
+}

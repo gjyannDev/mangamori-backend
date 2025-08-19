@@ -4,11 +4,15 @@ import {
   getMangaStatistics,
 } from "../../services/external/manga.api.js";
 import {
+  getMangaByIdService,
   getNewReleaseSeries,
   getTopRatedSeries,
   getTrendingSeries,
 } from "../../services/manga/discover.api.js";
-import { simplifiedMangaData } from "../../utils/manga.mappers.js";
+import {
+  simplifiedMangaData,
+  simplifiedMangaDataArray,
+} from "../../utils/manga.mappers.js";
 
 export async function getTrending(req: Request, res: Response) {
   try {
@@ -17,7 +21,7 @@ export async function getTrending(req: Request, res: Response) {
     const stats = await getMangaStatistics(mangaIds);
     const cover_url = await getMangaCoverImageUrl(trendingData);
 
-    const formatted_data = simplifiedMangaData(trendingData);
+    const formatted_data = simplifiedMangaDataArray(trendingData);
     const merged_data = formatted_data.map((manga: any) => {
       const matching_cover = cover_url?.coverUrl.find(
         (c: any) => c.id === manga.id
@@ -44,7 +48,7 @@ export async function getTopRated(req: Request, res: Response) {
     const stats = await getMangaStatistics(mangaIds);
     const cover_url = await getMangaCoverImageUrl(topRatedData);
 
-    const formatted_data = simplifiedMangaData(topRatedData);
+    const formatted_data = simplifiedMangaDataArray(topRatedData);
     const merged_data = formatted_data.map((manga: any) => {
       const matching_cover = cover_url?.coverUrl.find(
         (c: any) => c.id === manga.id
@@ -71,7 +75,7 @@ export async function getNewRealeases(req: Request, res: Response) {
     const stats = await getMangaStatistics(mangaIds);
     const cover_url = await getMangaCoverImageUrl(newReleaseData);
 
-    const formatted_data = simplifiedMangaData(newReleaseData);
+    const formatted_data = simplifiedMangaDataArray(newReleaseData);
     const merged_data = formatted_data.map((manga: any) => {
       const matching_cover = cover_url?.coverUrl.find(
         (c: any) => c.id === manga.id
@@ -88,5 +92,26 @@ export async function getNewRealeases(req: Request, res: Response) {
   } catch (error) {
     console.error("Error fetching new realease series: ", error);
     res.status(404).json({ error: "Failed to fetch trending manga" });
+  }
+}
+
+export async function getMangaById(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+
+    const manga_data = await getMangaByIdService(id);
+
+    const formatted_data = simplifiedMangaData(manga_data);
+
+    res.json(formatted_data);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(
+        "Error fetching trending by id in controllers: ",
+        error.message
+      );
+    } else {
+      console.error("Unkown error: ", error);
+    }
   }
 }

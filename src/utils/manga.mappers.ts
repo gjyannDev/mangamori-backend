@@ -3,7 +3,7 @@ import type {
   DiscoverSimplifiedData,
 } from "../types/discover.types.js";
 
-export function simplifiedMangaData(
+export function simplifiedMangaDataArray(
   data: DiscoverRawData[]
 ): DiscoverSimplifiedData[] {
   return data.map((item) => ({
@@ -16,4 +16,19 @@ export function simplifiedMangaData(
     status: item.attributes.status,
     year: item.attributes.year,
   }));
+}
+
+export function simplifiedMangaData(
+  data: DiscoverRawData
+): DiscoverSimplifiedData {
+  return {
+    id: data.id,
+    type: data.type,
+    title: data.attributes.title.en || data.attributes.title["ja-ro"],
+    description: data.attributes.description.en,
+    lastVolume: data.attributes.lastVolume,
+    lastChapter: data.attributes.lastChapter,
+    status: data.attributes.status,
+    year: data.attributes.year,
+  };
 }
