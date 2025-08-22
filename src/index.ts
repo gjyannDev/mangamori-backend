@@ -9,6 +9,7 @@ import discover_router from "./routers/discover/discover.router.js";
 import homepage_router from "./routers/homepage/homepage.router.js";
 import manga_track_router from "./routers/mangaTrack/manga.track.router.js";
 import { connecToDatabase } from "./services/db/mongo.connection.js";
+import auth_router from "./routers/auth/auth.router.js";
 
 dotenv.config();
 
@@ -37,6 +38,7 @@ app.use("/", homepage_router);
 //Other routes
 app.use("/discover", discover_router);
 app.use("/mangatrack", manga_track_router);
+app.use("/auth", auth_router);
 
 connecToDatabase().then(() => {
   app.listen(PORT, () => {

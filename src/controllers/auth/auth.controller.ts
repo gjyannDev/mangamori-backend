@@ -1,0 +1,36 @@
+import { Request, Response } from "express";
+import { User } from "../../models/user.model.js";
+
+export async function postSignIn(req: Request, res: Response) {
+  try {
+    return res.json("postSignIn is working");
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(400).send("Error, user not sign in");
+      console.error("Error sign in - Controller: ", error.message);
+    } else {
+      console.error("Unkown sign in error", error);
+    }
+  }
+}
+
+export async function postSignUp(req: Request, res: Response) {
+  try {
+    const { name, email, password } = req.body;
+
+    const user_created = User.create({
+      name,
+      email,
+      password,
+    });
+
+    return res.status(200).json(user_created);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(400).send("Error, user not created");
+      console.error("Error sign up - Controller: ", error.message);
+    } else {
+      console.error("Unkown sign up error", error);
+    }
+  }
+}
