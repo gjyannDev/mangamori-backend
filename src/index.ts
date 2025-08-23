@@ -5,6 +5,7 @@ import express from "express";
 import mongoose from "mongoose";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import { errorHandler } from "./middleware/error.middleware.js";
 import "./models/indexLoader.js";
 import auth_router from "./routers/auth/auth.router.js";
 import discover_router from "./routers/discover/discover.router.js";
@@ -41,6 +42,9 @@ app.use("/", homepage_router);
 app.use("/discover", discover_router);
 app.use("/mangatrack", manga_track_router);
 app.use("/auth", auth_router);
+
+//Middlewares
+app.use(errorHandler);
 
 connecToDatabase().then(() => {
   app.listen(PORT, () => {
