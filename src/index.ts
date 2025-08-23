@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
@@ -5,11 +6,11 @@ import mongoose from "mongoose";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import "./models/indexLoader.js";
+import auth_router from "./routers/auth/auth.router.js";
 import discover_router from "./routers/discover/discover.router.js";
 import homepage_router from "./routers/homepage/homepage.router.js";
 import manga_track_router from "./routers/mangaTrack/manga.track.router.js";
 import { connecToDatabase } from "./services/db/mongo.connection.js";
-import auth_router from "./routers/auth/auth.router.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use(
   cors({
