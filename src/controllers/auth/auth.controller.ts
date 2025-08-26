@@ -1,18 +1,49 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User from "../../models/user.model.js";
-import { signUpSchema } from "../../schemas/user.schemas.js";
+import { signInSchema, signUpSchema } from "../../schemas/user.schemas.js";
 import generateToken from "../../utils/generate.token.js";
 
-export async function postSignIn(req: Request, res: Response) {
+export async function postSignIn(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   try {
-    return res.json("postSignIn is working");
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      res.status(400).send("Error, user not sign in");
-      console.error("Error sign in - Controller: ", error.message);
+    const parse_body = signInSchema.parse(req.body);
+
+    const { email, password } = parse_body;
+
+    const user = await User.findOne({ email });
+
+    if (user && (await user.matchPassword(password))) {
+      const params = {
+        res: res,
+        id: user._id,
+      };
+
+      generateToken(params);
+
+      return res.status(200).json({
+        success: true,
+        message: "Sign in sucessfull",
+        user: {
+          _id: user._id,
+          email: user.email,
+          role: user.role,
+        },
+        type: "auth",
+      });
     } else {
-      console.error("Unkown sign in error", error);
+      res
+        .status(400)
+        .json({
+          success: false,
+          message: "Email or password is not valid.",
+          type: "auth",
+        });
     }
+  } catch (error) {
+    next(error);
   }
 }
 
@@ -42,8 +73,13 @@ export async function postSignUp(req: Request, res: Response) {
     generateToken(params);
 
     res.status(201).json({
-      _id: (await user)._id,
-      email: (await user).email,
+      success: true,
+      message: "Sign up sucessfull",
+      user: {
+        _id: (await user).id,
+        email: (await user).email,
+        role: (await user).role,
+      },
     });
   } else {
     res.status(400).json();

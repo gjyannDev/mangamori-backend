@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const signInSchema = z.object({
-  email: z.email(),
+  email: z.email({ message: "invalid email format" }),
   password: z.string().min(10, "Password must be atleast 10 characters"),
 });
 
